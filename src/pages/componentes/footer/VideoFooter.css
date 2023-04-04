@@ -1,0 +1,71 @@
+.VideoFooter{
+    position: relative;
+    bottom: 20%;
+    color: white;
+    margin-left: 30px;
+}
+
+.VideoFooter_text h3{
+    padding-bottom: 20px;
+}
+.VideoFooter_text p{
+    padding-bottom: 20px;
+}
+
+.VideoFooter_music{
+    display: flex;
+}
+/*
+.VideoFooter_icon{
+    border: 1px solid green;
+} ver o funcionamento das caixas e relações dos elementos
+*/
+
+.VideoFooterMusic_text{
+    /*border: 1px solid red;*/
+    width: 80%;
+    overflow-x: hidden;  /*esconder quando for pra fora*/
+}
+
+.VideoFooterMusic_text p{
+    animation: moveTheText 7s infinite linear;
+}
+
+.VideoFooter_record{
+    animation: spinTheRecord 3s infinite linear;
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+    height: 50px;
+    filter: invert(1);
+}
+
+@keyframes spinTheRecord {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+
+    }
+}
+
+@keyframes moveTheText{
+    0%{
+        transform: translateX(100%);
+    }
+
+    100%{
+        transform: translateX(-100%);
+    }
+}
+
+@media only screen and (max-width:440px){
+    .VideoFooter{
+        bottom: 22%;
+    }
+
+    .VideoFooterMusic_text{
+        width: 78%;
+    }
+}
