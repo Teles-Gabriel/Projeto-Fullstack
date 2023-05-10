@@ -1,0 +1,220 @@
+faça a documentação dos códigos em um arquivo readm.md 
+Abaixo o código App.js:
+
+import React, { useEffect, useState } from 'react';
+import './App.css';
+import Video from './pages/Video';
+import db from './config/firebase';
+import { collection, getDocs } from 'firebase/firestore/lite';
+
+function App() {
+
+  let maxHeight;
+  if(window.innerHeight <= 800){
+    maxHeight = window.innerHeight;
+  }
+
+  const [video, setVideos] = useState([])
+
+  async function getVideos(){
+    const videosCollection = collection(db, "Videos")
+    const videosSnapshot = await getDocs(videosCollection) //assincrono
+    const videosList = videosSnapshot.docs.map(doc => doc.data())
+    setVideos(videosList)
+  }
+
+  useEffect(()=>{
+
+    getVideos();
+
+  },[])
+
+  return (
+    <div className="App" style={{maxHeight: maxHeight + "px"}}>
+      <div className='app_videos'>
+        { video.map((item)=>{
+          return (
+            <Video 
+              likes={item.likes}
+              messages={item.messages}
+              shares={item.shares}
+              name={item.name}
+              description={item.description}
+              music={item.music}
+              url={item.url}
+            />
+          )
+        }) }
+        
+        {/* <Video 
+          likes={300}
+          messages={600}
+          shares={900}
+          name="Gabriel"
+          description="Gato goleiro"
+          music="Musica épica"
+          url='https://firebasestorage.googleapis.com/v0/b/jornada-b5e9d.appspot.com/o/brecker2.mp4?alt=media&token=9aa979e9-0907-4093-abd5-a71efe4fc946'
+        /> */}
+        {/* <Video 
+          likes={300}
+          messages={600}
+          shares={900}
+          name="Gabriel Teles"
+          description="Gabriel meu amorzin"
+          music="Love Love"
+          url='https://firebasestorage.googleapis.com/v0/b/jornada-b5e9d.appspot.com/o/brecker2.mp4?alt=media&token=9aa979e9-0907-4093-abd5-a71efe4fc946'
+        /> */}
+        {/* <Video 
+          likes={300}
+          messages={600}
+          shares={900}
+          name="Gabriel Medeiros"
+          description="Gabriel Gato"
+          music="Musica épica"
+          url='https://firebasestorage.googleapis.com/v0/b/jornada-b5e9d.appspot.com/o/brecker2.mp4?alt=media&token=9aa979e9-0907-4093-abd5-a71efe4fc946'
+        /> */}
+
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+O código index.js:
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+
+O código Video.js:
+
+import React, { useRef, useState }from 'react';
+import VideoFooter  from './componentes/footer/VideoFooter';
+import Videosidebar from "./componentes/footer/sidebar/Videosidebar";
+import "./video.css";
+
+function Video({likes, messages, shares, name, description, music, url}) {
+
+  const videoRef = useRef(null);
+  const [play, setPlay] = useState(false);
+
+    function handdleStart(){
+      if(play){
+        videoRef.current.play();
+        setPlay(false);
+      } else {
+        videoRef.current.pause();
+        setPlay(true);     
+      }
+    }
+  
+  return (
+    <div className='video'>
+      <video 
+          className='video_player'
+          ref={videoRef}
+          onClick={handdleStart}
+          loop
+          src= {url}
+>
+      </video>
+      <Videosidebar
+        likes={likes}
+        messages={messages}
+        shares={shares}
+        src= {url}
+      />
+      <VideoFooter
+      name={name}
+      description={description}
+      music={music}
+      src= {url}
+      />
+    </div>
+  );
+}
+
+export default Video
+
+o código VideoFooter.js:
+
+import React from 'react';
+import "./VideoFooter.css";
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+
+function VideoFooter({name, description, music}) {
+  return (
+    <div className='VideoFooter'>
+        <div className='VideoFooter_text'>
+            <h3>@{name}</h3>
+                <p>{description}</p>
+            <div className='VideoFooter_music'>
+                <MusicNoteIcon className='VideoFooter_icon'/>
+                <div className='VideoFooterMusic_text'>
+                    <p>{music}</p>
+                </div>
+            </div>
+        </div>
+        <img
+            className='VideoFooter_record'
+            src='https://poqlymuephttfsljdabn.supabase.co/storage/v1/object/public/jornadadev/vinil.png'
+            alt='Imagem de um vinil girando'
+        />
+    </div>
+  )
+}
+
+export default VideoFooter
+
+O código Videosidebar.js:
+
+import React, { useState }from 'react';
+import "./Videosidebar.css";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ChatIcon from '@mui/icons-material/Chat';
+import ShareIcon from '@mui/icons-material/Share';
+
+function VideoSidebar({likes, messages, shares}){
+
+  const [liked, setLiked] = useState(false);
+
+  function handdleLike() {
+    setLiked(!liked)
+  }
+
+  return (
+    <div className='VideoSidebar'>
+      <div 
+        className='VideoSidebar_options'
+        onClick={handdleLike}
+      >
+
+        {liked ? <FavoriteIcon fontSize='large'/> : <FavoriteBorderIcon fontSize='large' />}
+
+        <p>{liked ? likes + 1 : likes}</p>
+      </div>
+      <div className='VideoSidebar_options'> 
+        <ChatIcon fontSize='large'/>
+        <p> {messages} </p>
+      </div>
+      <div className='VideoSidebar_options' fontSize='large'>
+        <ShareIcon fontSize='large'/>
+        <p>{shares}</p>
+      </div>
+    </div>
+  )
+}
+
+export default VideoSidebar
