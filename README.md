@@ -4,6 +4,7 @@ This project was developed during the full stack EBAC journey.
 ## Features
 ✔️ Likes function.
 ✔️ Swipe to change videos.
+✔️ Side bar and footer components.
 
 ## Main Technologies
 * React
@@ -17,7 +18,6 @@ Before starting, you need to have installed:
 * NodeJs;
 * NPM;
 * GIT;
-
 ## Starting
 Clone this project:
 ```bash
@@ -26,4 +26,8 @@ Clone this project:
 Access:
 ```bash
   cd React-Tik-Tok-Clone
+```
+Start with NPM:
+```bash
+  npm run start
 ```
