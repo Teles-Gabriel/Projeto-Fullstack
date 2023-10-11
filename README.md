@@ -33,4 +33,8 @@ Start with NPM:
 ```bash
   npm run start
 ```
-You will also need to create a database in firebase and replace the information in the *firebase.js* file.
+You will also need to create a database in firebase and replace the information in the ./src/config/firebase.js\
+You can use this template:
+![Captura de tela de 2023-10-11 11-37-01](https://github.com/Teles-Gabriel/React-Tik-Tok-Clone/assets/115121224/68299638-8b38-4482-bfe8-cf64bfa5cbcd)
+The function to receive data from firebase is in the ./src/App.js\
+It's the function: getVideos.
